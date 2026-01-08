@@ -1,0 +1,134 @@
+
+s2.1 with interrupt
+
+extension of s21 with interrupt and others
+
+int   xop  23      int #n  (r1 as int number), software int
+reti  xop  24      return from int
+pushm xop  25      pushm r1 (r1 as sp)
+popm  xop  26      popm r1  (r1 as sp)
+
+where pushm/popm   push/pop registers R[0]..R[15] to M[sp]
+
+interrupt vectore stored at 1000
+
+here is some example how to write interrupted routines.
+
+Let make one process, do the counting of a glabal variable "cnt".  The main program is actually an empty loop but it also check to terminate the program when the count reach 10.  The proces is an interrupt service routine (ISR).  When an interrupt occurs, ISR is called and executed to the instruction "reti" then it will return to main.
+
+:main
+mov r1 #isr
+st r1 1000   ; set up int vector
+mov r1 #0
+st r1 cnt    ; cnt = 0
+:loop
+; this is almost empty loop
+ld r1 cnt
+eq r1 #10
+jf loop
+trap r0 #stop
+
+:isr
+; must not use r1
+ld r2 cnt
+add r2 r2 #1
+st r2 cnt
+reti
+
+If the interrupt occurs every n instructions, then the program will take 10*n*(time in irs) instructions before it terminates.
+
+Compare the above program to this plain count to 10 program.
+
+:main
+mov r1 #0
+st r1 cnt
+:loop
+ld r1 cnt
+add r1 r1 #1
+st r1 cnt
+eq r2 r1 #10
+jf r2 loop
+trap r0 #stop
+
+This program will take 10*(time in loop) instructions to complete.
+
+Now suppose we break the counting routine into two and make it that 2 interrupts are required to complete one counting. We have to change the interrupt vector dynamically in order to schedule the next instruction when the interrupt occurs. Meanwhile we have to save all registers to make the isr reentrant.
+
+:main
+mov r1 #isr1
+st r1 1000   ; set int vec
+mov r1 #0
+st r1 cnt    ; cnt = 0
+:loop
+;   this is almost empty loop
+ld r1 cnt
+eq r2 r1 #10
+jf r2 loop
+trap r0 #stop
+  
+;  the counting routint is split into two
+:isr1
+ld r2 cnt
+inc r2
+pushm sp
+mv r3 #isr2
+st r3 1000     ; change interrupt vector
+reti
+:isr2
+popm sp
+st r2 cnt
+mv r3 #isr1
+st r3 1000     ; change int vec
+reti
+
+Now it will take twice the number of interrupt (of the previous example) to run the program to completion.
+
+Exercise
+
+The above example has just one process.  Make a program with two processes. Let them run concurrently using interrupt.
+
+Task Switching (with interrupt)
+
+It is error prone to schedule multiple processes with interrupt by altering interrupt vector as the above examples.  Now intead of making a process to be an interrupt service routine, we make a task-switcher to be an interrupt service routine that handle the shuffle of the program counter to change to another process every time an interrupt occurs.  The code of a process will be just a normal code.  All work to switch processes is done in one place in the task-switcher.  
+
+:process1
+....
+...  <-  int1
+:L1
+....
+...  <-  int3
+
+:process2
+...
+...
+... <- int2
+:L2
+...
+
+:tswitch  (an isr)
+save next PC  (of the current process)
+pushm         (of the current process)
+get next process
+popm          (of the next process)
+restore PC    (of the next process)
+reti          (return directly to PC of next process)
+
+The time-line behavior of running process1 and process2 concurrently should be as follow.  Let us begin with process1 running until int-1 occurs.  Then, tswitch is executed. It saves the next PC (L1) of process1, save all registers then change the return-address to process2, restore all registers of the process2, then make a return from interrupt which will jump directly to process2.  The process2 runs until int-2 occurs. The tswitch is called. It will save L2, save all registers of process2, restore all registers of process1, get L1 to return-address, and make a jump to L1.  The process1 continues from L1 until an interrupt int-3 occurs, then tswitch will jump to L2 of process2 and doing all the housekeeping work. etc.  All the shuffling of PC of two processes and saving restoring registers are done in one place in tswitch routine during an interrupt.  This is how we manage concurrent processes.
+
+We need instructions to save/restore the internal return-address register (remember that it is used in int/reti) so that we can manipulate save/restore PC of the process.
+
+xch r1  xop 27   exchange return-address with r1
+
+We need data structure of each process to keep: its PC, its registers. It is called "stack segment" of each process.  Now, let us code the tswitch.
+
+:tswitch
+xch r1     	; save current process PC to r1
+pushm sp
+mov sp #nextPCB  ; pointer to data of next process
+popm sp
+xch r1     ; restore next process PC to return-address
+reti
+
+26 Mar 2016
+update 12 Feb 2017
+

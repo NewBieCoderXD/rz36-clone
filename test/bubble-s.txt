@@ -1,0 +1,155 @@
+.symbol
+ fp 30
+ sp 29
+ retval 28
+ rads 27
+ data 1100
+ maxdata 1120
+.code 0
+ mov fp #3500
+ mov sp #3000
+ jal rads main
+ trap r0 #0
+; fun init pv 0
+:init
+; gnAsg :(#1 0 )
+; gnAsg :((vec data #1 )(- maxdata #1 ))
+st r1 @1 fp
+st r2 @2 fp
+st r3 @3 fp
+add fp fp #4
+st rads @0 fp
+mov r1 #0
+jmp L102
+:L103
+ld r2 maxdata
+sub r3 r2 r1
+st r3 @data r1
+add r1 r1 #1
+:L102
+ld r3 maxdata
+lt r2 r1 r3
+jt r2 L103
+:L101
+ld rads @0 fp
+sub fp fp #4
+ld r3 @3 fp
+ld r2 @2 fp
+ld r1 @1 fp
+ret rads
+; fun show pv 0
+:show
+; gnAsg :(#1 0 )
+st r1 @1 fp
+st r2 @2 fp
+st r3 @3 fp
+add fp fp #4
+st rads @0 fp
+mov r1 #0
+jmp L105
+:L106
+ld r2 @data r1
+trap r2 #1
+add r1 r1 #1
+:L105
+ld r3 maxdata
+lt r2 r1 r3
+jt r2 L106
+:L104
+ld rads @0 fp
+sub fp fp #4
+ld r3 @3 fp
+ld r2 @2 fp
+ld r1 @1 fp
+ret rads
+; fun swapx pv 2
+:swapx
+; gnAsg :(#3 (vec data #1 ))
+; gnAsg :((vec data #1 )(vec data #2 ))
+; gnAsg :((vec data #2 )#3 )
+st r1 @1 fp
+st r2 @2 fp
+st r3 @3 fp
+st r4 @4 fp
+add fp fp #5
+st rads @0 fp
+pop sp r2
+pop sp r1
+ld r4 @data r1
+mov r3 r4
+ld r4 @data r2
+st r4 @data r1
+st r3 @data r2
+:L107
+ld rads @0 fp
+sub fp fp #5
+ld r4 @4 fp
+ld r3 @3 fp
+ld r2 @2 fp
+ld r1 @1 fp
+ret rads
+; fun sort pv 0
+:sort
+; gnAsg :(#1 0 )
+; gnAsg :(#2 0 )
+st r1 @1 fp
+st r2 @2 fp
+st r3 @3 fp
+st r4 @4 fp
+st r5 @5 fp
+add fp fp #6
+st rads @0 fp
+mov r1 #0
+jmp L109
+:L110
+mov r2 #0
+jmp L111
+:L112
+add r4 r2 #1
+ld r3 @data r4
+ld r5 @data r2
+lt r4 r3 r5
+jf r4 L113
+push sp r2
+add r3 r2 #1
+push sp r3
+jal rads swapx
+:L113
+add r2 r2 #1
+:L111
+ld r4 maxdata
+sub r5 r4 #1
+lt r3 r2 r5
+jt r3 L112
+add r1 r1 #1
+:L109
+ld r4 maxdata
+lt r3 r1 r4
+jt r3 L110
+:L108
+ld rads @0 fp
+sub fp fp #6
+ld r5 @5 fp
+ld r4 @4 fp
+ld r3 @3 fp
+ld r2 @2 fp
+ld r1 @1 fp
+ret rads
+; fun main pv 0
+:main
+; gnAsg :(maxdata 15 )
+st r1 @1 fp
+add fp fp #2
+st rads @0 fp
+mov r1 #15
+st r1 maxdata
+jal rads init
+jal rads sort
+jal rads show
+:L114
+ld rads @0 fp
+sub fp fp #2
+ld r1 @1 fp
+ret rads
+.data 200
+.end

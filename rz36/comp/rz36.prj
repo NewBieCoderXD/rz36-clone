@@ -1,0 +1,26 @@
+[rz36]
+Frame=202 0 715 620
+StatusBar=0,0,0,0
+Name=rz36
+CurrentFile=
+OpenFiles=0
+ProjectPath=C:\Users\prabhas\Dropbox\rz-prolang-2017\rz35\lex
+SourcesDir=
+Defines=
+IncludeFilesCount=1
+Libraries=
+LinkerArgs=
+ProjectTime=63
+MakeName=
+MakeDir=
+Exe=
+DebuggerArguments=
+DbgExeName=
+DbgDir=
+CompilerFlags=8
+ProjectFlags=0
+Useframework=0
+NumberOfBreakpoints=0
+ErrorFile=
+NrOfFileProcessors=0
+IncludeFile0=c:\lcc\include

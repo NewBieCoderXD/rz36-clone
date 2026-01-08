@@ -1,0 +1,23 @@
+ax[10]    // declare an array size 10
+
+// max of array a size n
+max(a, n)  
+  m = a[0]
+  i = 1
+  while( i < n )
+    if( m < a[i] ) m = a[i]
+    i = i + 1
+  return m
+
+
+// initialise array
+init(a, n)
+  i = 0
+  while( i < n )
+    a[i] = i + 10
+    i = i + 1
+
+main()
+  init(&ax,10)          // pass ref of ax
+  print(max(&ax,10))
+
