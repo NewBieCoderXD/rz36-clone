@@ -118,7 +118,7 @@ int main( int argc, char *argv[] ){
 
 //	ref = getMainRef();
 //	printf(">>%d\n",ref);
-
+  printf("--------------\n");
 	outHeader();
 	genall();
 

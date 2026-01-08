@@ -12,6 +12,7 @@ gcc as21/*.h as21/*.c -o build/as21
 ```
 mkdir output
 ./build/rz36 test/fac.txt > output/fac_out.txt
+# Remove Parse Tree information
 ./build/as21 output/fac_out.txt
 ./build/sim21 output/fac_out.obj
 ```
