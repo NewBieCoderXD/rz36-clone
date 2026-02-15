@@ -1,0 +1,10 @@
+rz33 explain
+
+The compiler outputs s-code.  This s-code has one additional instruction, icRef. It is used with the virtual machine "somv2x". 
+
+All benchmarks are compiled and run successfully except "queen.txt".
+
+I still don't know the cause of error. It is compiled, but when it is executed, it ran into an infinite loop.
+
+20 Aug 2011
+

@@ -1,0 +1,45 @@
+/* this file is generated from ic spec */
+//typedef struct { char str[32]; } icEntry;
+//#define icNop 0
+#define icAdd 1
+#define icSub 2
+#define icMul 3
+#define icDiv 4
+#define icBand 5
+#define icBor 6
+#define icBxor 7
+#define icNot 8
+#define icEq 9
+#define icNe 10
+#define icLt 11
+#define icLe 12
+#define icGe 13
+#define icGt 14
+#define icShl 15
+#define icShr 16
+#define icMod 17
+#define icLdx 18
+#define icStx 19
+#define icRet 20
+#define icRetv 21
+#define icArray 22
+#define icEnd 23
+#define icGet 24
+#define icPut 25
+#define icLd 26
+#define icSt 27
+#define icJmp 28
+#define icJt 29
+#define icJf 30
+#define icLit 31
+#define icCall 32
+//#define icCallt 33
+#define icInc 34
+#define icDec 35
+#define icSys 36
+#define icCase 37
+#define icFun 38
+#define icCalli 39
+#define icBreak 40
+#define icEwhile 41
+#define icRef 42		// new instruction for Rz

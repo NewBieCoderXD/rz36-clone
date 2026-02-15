@@ -1,0 +1,19 @@
+n <<exp eol >>
+[1] <<term exp2 eol >>
+[6] <<factor term2 exp2 eol >>
+[11] <<n term2 exp2 eol >>
++ <<term2 exp2 eol >>
+[8] <<exp2 eol >>
+[2] <<addop term exp2 eol >>
+[4] <<+ term exp2 eol >>
+n <<term exp2 eol >>
+[6] <<factor term2 exp2 eol >>
+[11] <<n term2 exp2 eol >>
+* <<term2 exp2 eol >>
+[7] <<mulop factor term2 exp2 eol >>
+[9] <<* factor term2 exp2 eol >>
+n <<factor term2 exp2 eol >>
+[11] <<n term2 exp2 eol >>
+eol <<term2 exp2 eol >>
+[8] <<exp2 eol >>
+[3] 

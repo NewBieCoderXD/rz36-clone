@@ -1,0 +1,76 @@
+linear code of Rz parse-tree    27 Nov 2010
+
+This will be an excercise to traverse parse-tree and generate a machine-code-like linear code.  The linear code has the postfix form (suppose to be executed by a stack-based machine).  The control-flow is transformed into "jump" instructions and label similar to assembly language.
+
+operand
+
+  local var :         local.n
+  global var :        global.a
+  number :            lit.m
+  string :            str.a
+  &local :            &local.n
+  &global :           &global.a
+  *local :            *local.n
+  *global :           *global.a
+
+operator
+
+  binary op :         opname
+  vector  v[exp] :    exp, v, ldx
+  
+assignment
+  gv = ...   :        st.a
+  lv = ...   :        put.n
+  v[exp] = ... :      exp, v, stx
+  *gv = ...  :        *st.a
+  *lv = ...  :        *put.n
+  *v[exp] = ... :     illegal
+  &lv = ...  :        illegal
+  &gv = ...  :        illegal
+
+control
+
+  do e1 e2 ... :      e1, e2, ...
+  while cond body :    
+     :loop
+       cond
+       jf exit
+       body
+       jmp loop
+     :exit
+
+  if cond action :
+       cond
+       jf exit
+       action
+     :exit
+
+  if cond acT else acF :
+       cond
+       jf else
+       acT
+       jmp exit
+     :else
+       acF
+     :exit
+
+  fun(arg1, arg2, ...)  :
+     arg1
+     arg2
+     ...
+     call fun
+
+  function header
+
+     ;; fname arity xx fs yy
+     :fun...
+       body
+       ret
+
+PS  I do not handle the cases: *v[ex] and &v[ex] properly.
+
+End
+
+
+     
+

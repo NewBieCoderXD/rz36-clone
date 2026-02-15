@@ -1,0 +1,98 @@
+
+example of LL(1) parser  (grammar from slide page 25)
+
+
+step
+
+push starting symbol #exp
+
+rule 1   exp
+  pop
+  push #exp2
+  push #term
+
+rule 2   exp2-2
+  pop
+  push #exp2
+  push #term
+  push #addop
+
+rule 3  exp2-3
+  pop
+
+rule 4  addop-4
+  pop
+  gettoken
+
+rule 5  addop-5
+  pop
+  gettoken
+
+rule 6  term
+  pop
+  push #term2
+  push #factor
+
+rule 7  term2-7
+  pop
+  push #term2
+  push #factor
+  push #mulop
+
+rule 8  term2-8
+  pop
+
+rule 9  mulop
+  pop
+  gettoken
+
+rule 10  factor-10
+  pop
+  gettoken
+  push #rparen
+  push #exp
+
+rule 11  factor-11
+  pop
+  gettoken
+
+rule 12  rparen
+  pop
+  gettoken
+
+
+main stack execution loop
+
+stack initialise with $
+
+
+push #exp 
+
+loop until tos = $
+{
+x = look up next rule (tos,current-token)
+
+switch x
+  0 : error()
+  1 : exp()
+  2 : exp2-2()
+  3 : exp2-3()
+  4 : addop-4()
+  5 : addop-5()
+  6 : term()
+  7 : term2-7()
+  8 : term2-8()
+  9 : mulop()
+  10 : factor-10()
+  11 : factor-11()
+  12 : rparen()
+}
+
+
+
+
+   
+  
+
+
+

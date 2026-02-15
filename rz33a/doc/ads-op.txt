@@ -1,0 +1,8 @@
+address operator  &
+
+&gv  ->   ads of gv
+&lv  ->   ref.n          ref is a new s-code instruction
+&vec[ex] ->  ex, ads of vec, add
+&fun  ->  illegal
+
+19 Aug 2011

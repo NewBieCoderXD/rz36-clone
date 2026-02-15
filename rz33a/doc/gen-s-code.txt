@@ -1,0 +1,67 @@
+Rz to S-code    3 Aug 2011
+
+operand   RHS
+
+  local var          get.n
+  global var         ld.a
+  number             lit.m
+  string             lit.a
+  &local             illegal
+  &global            lit.a
+  *local             get.n, lit.0, ldx 
+  *global            ld.a, lit.0, ldx
+
+assignment  LHS
+
+  gv = ...           st.a
+  lv = ...           put.n
+  v[exp] = ...       ld.v, exp, ... stx
+  *gv = ...          ld.a, lit.0, ... stx 
+  *lv = ...          get.n, lit.0, ... stx
+  *v[exp] = ...      illegal
+  &lv = ...          illegal
+  &gv = ...          illegal
+
+control
+
+  do e1 e2 ...       e1, e2, ...
+
+  while cond body     
+       jmp.in
+     :loop
+       body
+     :in
+       cond
+       jt.loop      
+
+  if cond action 
+       cond
+       jf.exit
+       action
+     :exit
+
+  if cond acT else acF 
+       cond
+       jf.else
+       acT
+       jmp.exit
+     :else
+       acF
+     :exit
+
+  fun(arg1, arg2, ...)  
+     arg1
+     arg2
+     ...
+     call.fun
+
+  function header
+
+     :fname
+       fun.(fs-arity+1)
+       body
+       ret.fs
+
+the s-code generator is based on {gencode.c, icode.c, icname.h} from som-v2-c.
+
+End

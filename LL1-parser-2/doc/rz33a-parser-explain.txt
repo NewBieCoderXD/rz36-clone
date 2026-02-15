@@ -1,0 +1,49 @@
+rz33a  parser for Tawan ASM
+
+sample of ASM
+
+CLRA
+MOV R1,100
+MOV R2,200
+ADD R1
+ADD R2
+MOVA R1
+
+Grammar of ASM
+
+asm = op oprnd asm | EOF
+op = CLRA | MOV | ADD | MOVA
+oprnd = reg , num | reg | empty
+reg = R[0..31]
+
+Parser
+
+return 0 - error, 1 - OK
+
+reg()
+  match('R')
+  ret num()
+
+op()
+  switch tokentype()
+    mov: match('MOV')
+    ...
+    default: ret 0
+
+oprnd()
+  if reg() != 0      
+     if token == ','    //  lookahead
+        match(',')
+        ret num()
+     else
+        ret 1
+   ret 1
+
+asm()
+   if token == EOF  ret 1
+   if op() != 0
+      oprnd()
+      asm()
+   ret 0
+
+   

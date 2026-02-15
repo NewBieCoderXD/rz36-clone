@@ -1,0 +1,86 @@
+assignment statement
+
+LHS = RHS
+
+LHS syntax
+
+    [*] {vec name idx, name}
+
+Meaning   gv - global, lv - local
+
+getref(name) -> ref
+
+1)  name = RHS	
+    gv: M[ref] = RHS
+    lv: M[fp+ref] = RHS
+ 
+2)  vec name idx = RHS
+    eval(idx) -> ix
+    gv: M[ref+ix] = RHS
+    lv: M[fp+ref+ix] = RHS
+
+3)  * name = RHS
+    gv: M[M[ref]] = RHS
+    lv: M[M[fp+ref]] = RHS
+
+4)  * vec name idx = RHS
+    eval(idx) -> ix
+    gv: M[M[ref+ix]] = RHS
+    lv: M[M[fp+ref+ix]] = RHS
+
+RHS syntax
+
+    [*,&] {vec name idx, name}
+
+Meaning
+
+getref(name) -> ref
+
+1)  name
+    gv: M[ref] -> val
+    lv: M[fp+ref] -> val
+
+2)  vec name idx
+    eval(idx) -> ix
+    gv: M[ref+ix] -> val
+    lv: M[fp+ref+ix] -> val
+
+3)  * name
+    gv: M[M[ref]] -> val
+    lv: M[M[fp+ref]] -> val
+
+4)  * vec name idx
+    eval(idx) -> ix
+    gv: M[M[ref+ix]] -> val
+    lv: M[M[fp+ref+ix]] -> val
+
+5)  & name
+    gv: ref -> val
+    lv: fp+ref -> val
+
+6)  & vec name idx
+    eval(idx) -> ix
+    gv: ref+ix -> val
+    lv: fp+ref+ix -> val
+
+Algorithm 
+
+LHS
+
+1) getref(name) -> ref
+2) if lv, fp + ref -> ref
+3) if vec, ref + eval(idx) -> ref
+4) if *,  M[M[ref]] = RHS else M[ref] = RHS
+
+RHS
+
+1) getref(name) -> ref
+2) if lv, fp + ref -> ref
+3) if vec, ref + eval(idx) -> ref
+4) if *, M[M[ref]] -> val
+   if &, ref -> val
+   else  M[ref] -> val
+   return val
+
+end 30 Oct 2010
+    

@@ -1,0 +1,11 @@
+Rz compiler
+
+I want to rewrite the old rz compiler in order to use it for future teaching. The required changes are 1) to produce an explicit parse-tree, 2) separate code generation.  There is no need for virtual machine code (the byte-code).  From source to parse-tree is a textbook style scanning and parsing.  From parse-tree to a target machine code depends on the type of class one wants to teach (low-level or high-level, practical or theoretical).
+
+The base code is from s2toolsv11 (which comprises of rz compiler, rzvm, s2 assembler and s2 simulator).  In rz compiler, there are "lexgen.c" that generates "token.c"  automatically from an input specification and "pgen.c" that generates "parse.c" from a grammar.  Many parts will be discarded including rzvm, s2 assembler and simulator.  The compiler will output s2 assembly language.
+
+The parse-tree will likely be similar to the one in "nut" language. It is good to share the code. So, the structure of the code generator will be similar too. The explicit parse-tree is essential for students to use and modify this compiler to their own purposes because the parse-tree can be visually inspect for its correctness.
+
+The current rz compiler generated a temp file.  That will be eliminated.
+
+26 Sept 2010

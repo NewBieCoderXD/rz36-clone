@@ -1,0 +1,39 @@
+state of eval3  in rz3
+
+eval( ) works correctly except "return".  It ran these benchmarks correctly: bubble.txt, fac.txt, hanoi.txt, inc.txt, matmul2.txt, perm.txt, queen.txt, quick.txt, sieve2.txt.  
+
+I modified "matmul.txt" to eliminate call to "index" which contains "return".  So, I can say, eval() is 90% correct.
+
+The problem of "return" stems from its "jump out from the middle" behaviour.  That is, "return" must exit the function call.  Our meta-interpreter cannot do that.  The control flow in the meta-interpreter (the eval) works like this:
+
+  eval call fun
+      fun eval body
+           eval return  -> exit from call fun
+
+the stack frame can be create/delete properly. However, the flow of control cannot be manipulate explicitly.  The "command" that affects the control flow are:  if, while, do, call, return.
+
+  if eval cond is true 
+    then  eval true-action
+    else  eval false-action
+
+  while eval cond is true
+    eval body
+
+  do
+    while arg is not nil
+       eval head arg
+       arg = tail arg
+
+  call ... 
+
+These control flows are "implicit".  We use the flow of meta-interpreter.  To be able to "return", we need to have an explicit flow and to redirect the execution of "next instruction" of "return" to match up to "call".  To do that we need "choice point".  Before the call, we save the "choice point".  At "return" we restore the choice point.
+
+How to represent "choice point"?
+
+In a normal linear code, there is PC to do that.  But we don't have a PC.  Compiling by continuation (a la callcc) is suitable for this purpose.  But it is complicate.
+
+I try to use a global flag and have "return" to set this flag. In any "loop" the interpreter will check this flag and determine whether it will continue.  But it is still difficult to "match up" with "call".
+
+The solution will require me to spend more time.  Because of this, and because meta-interpreter is not my main goal (my goal is to illustrate how to generate machine codes), I will stop my work on eval now. And will prepare the code generator instead.     
+
+15 Nov 2010

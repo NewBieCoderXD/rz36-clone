@@ -1,0 +1,39 @@
+som-v2x  
+
+This is a modified version of som-v2 to be used with Rz33 compiler (that produce som-v2 object).
+
+The Rz language has an "address" operator (&), in order to do that with a local variable it is necessary to have an additional opcode of S-code because the address is relative to FP which is known at runtime.  The new code is icRef (42):
+
+icRef  =>  push(SSBASE+fp-arg)
+
+The other improvement is possible.  The dereferent operator (*) will produce the following s-code:
+
+ *v  =>   (RHS) get.v lit.0 ldx
+          (LHS) get.v lit.0 value stx
+
+If there are ldi (indirect) and sti, then lit.0 is not necessary.
+
+icLdi  =>  base = pop(), push(M[base])
+icSti  =>  val = pop(), base = pop(), M[base] = val
+
+For syscall, sys.6 is print-array-string.  The use of array-string is simple, an integer holds a character. The string is terminated by 0.
+
+I also improve the writing style in eval() a little bit (in bop). For example
+
+from 
+
+  icAdd:   a = NEXT + TOS;
+           sp--;
+           TOS = a;
+           ip++;
+
+to
+
+  icAdd:   NEXT += TOS;
+           sp--;
+           ip++;
+
+22 Aug 2011
+
+
+

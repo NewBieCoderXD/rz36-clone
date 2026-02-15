@@ -1,0 +1,33 @@
+
+there are two stacks: operand, operator
+push one magic op that has lowest precedence to operator stack
+
+bop
+  see input token
+    operator:
+      if precedence this <= top, do top        // left associate
+        pop two operands and make top bop
+        push it to operand stack
+        push input to operator stack
+      else defer this
+        push input to operator stack
+    operand:
+      push input to operand stack
+    end:
+      unwind operator stack
+      while top is not magic op
+        popop and two operands and make bop
+        push it to operand stack
+      throw away magic op
+
+encoding of operators 
+(code 49) BOT * / - + = == & && | || ! != < <= > >= (code 65)
+
+precedence of binary operators low..high
+   && ||            (10)
+   == != < <= > >=  (20)
+   + -              (30)
+   * /              (40)
+
+25 October 2010
+end
