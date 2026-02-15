@@ -39,11 +39,11 @@ oprnd()
         ret 1
    ret 1
 
-asm()
+asm2()
    if token == EOF  ret 1
    if op() != 0
       oprnd()
-      asm()
+      asm2()
    ret 0
 
    

@@ -175,5 +175,5 @@ void patchCalli(int a, int b);
 // asm.c
 
 void mylex2(void);
-int asm(void);
+int asm2(void);
 

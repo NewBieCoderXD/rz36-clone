@@ -129,7 +129,7 @@ int main( int argc, char *argv[] ){
 //	testlex(); exit(0);
 
 	mylex2();
-	asm(); exit(0);
+	asm2(); exit(0);
 /*
 	pass();
 	showParseTree();

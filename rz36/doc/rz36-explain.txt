@@ -9,7 +9,7 @@ present state
 1)  cannot return value in recursive call
     because use "retval" register. must "push" it.
 2)  do not generate code for * &
-3)  have asm("...")
+3)  have asm2("...")
 
 
 to do list
@@ -27,7 +27,7 @@ interrupt()
 
 If no local variable is used in the body, it generates machine code with no frame.  The interrupt service routine is ended with "ret r31", return from interrupt.  This is different from a normal return which is "ret rads". The name "interrupt" is a global symbol. It can be referred to in the assembly code, such as "mov r1 #interrupt" and "st r1 1000" (set up the interrupt vector at the address 1000).
 
-The declaration of "asm(x)" will not generate any code if its body is empty.
+The declaration of "asm2(x)" will not generate any code if its body is empty.
 
 15 Jan 2013
 

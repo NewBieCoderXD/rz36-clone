@@ -50,11 +50,11 @@ int oprnd(void){
 	return 1;
 }
 
-int asm(void){
+int asm2(void){
 	if( tok == tkEOF ) return 1;
 	if( op() != 0 ){
 		oprnd();
-		asm();
+		asm2();
 	}
 	return 0;
 }
